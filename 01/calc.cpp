@@ -10,28 +10,27 @@ using namespace std;
 class My_exception : public exception{
 	string m_error;
 public:
-	My_exception(string error):m_error(error){}
+	My_exception(const string &error):m_error(error){}
 	const char* what() const noexcept{
 		return m_error.c_str();
 	}
 };
 class Calc{
-	const char *s;	//обрабатываемая строка
+	string s;	//обрабатываемая строка
 	int cur=0;		//позиция текущего символа в s
 	char c;			// текущий символ
 public:
 	int result;
 
-	Calc(const char*p);
+	Calc(const string &s);
 	char get_sym();	//получаем следующий символ
 	int f_add();
 	int f_mult();
 	int f_ynary_minus();
 	int f_int();
 };
-	Calc::Calc(const char*p){
-		string p1(p);
-		s=p1.c_str();
+	Calc::Calc(const string & p){
+		s=p;
 		c=get_sym();
 		result=f_add();
 	}
@@ -41,14 +40,23 @@ public:
 		return s[cur++];
 	}
 	int Calc::f_int(){
-		char str[20];
+		string str;
 		int i;
 		for( i=0;c>='0' && c<='9';i++){
 			str[i]=c;
 			c=get_sym();
 		}
 		str[i]='\0';
-		return atoi(str);
+
+		try{
+			i=stoi(str);
+		}
+		catch (const exception & err){
+			cout<<"!!!"<<err.what();
+			return 1;
+		}
+		return i;
+
 	}
 	int Calc::f_ynary_minus(){
 		int res;
@@ -69,8 +77,10 @@ public:
 			else{
 				c=get_sym();
 				k=f_ynary_minus();
-				if(k==0)
-					throw My_exception("!!! деление на ноль");
+				if(k==0){
+					cout <<"!!! деление на ноль";
+					return 1;
+				}
 				res/=k;
 			}
 		}
@@ -97,6 +107,7 @@ public:
 
 int main(int argc, char const *argv[])
 {
+
 	try{
 		if(argc!=2)
 		throw My_exception("!!! неправильное кол-во аргументов");
@@ -104,7 +115,7 @@ int main(int argc, char const *argv[])
 		cout<< A.result;
 	}
 	catch (My_exception &err){
-        cout<<err.what();
+    	cout<<err.what();
 		return 1;
 	}
 	return 0;
