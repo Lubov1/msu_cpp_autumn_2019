@@ -115,7 +115,7 @@ int main(int argc, char const *argv[])
 		cout<< A.result;
 	}
 	catch (My_exception &err){
-    	cout<<err.what();
+    		cout<<err.what();
 		return 1;
 	}
 	return 0;
