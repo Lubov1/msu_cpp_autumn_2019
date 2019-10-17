@@ -43,18 +43,10 @@ public:
 		string str;
 		int i;
 		for( i=0;c>='0' && c<='9';i++){
-			str[i]=c;
+			str.push_back(c);
 			c=get_sym();
 		}
-		str[i]='\0';
-
-		try{
-			i=stoi(str);
-		}
-		catch (const exception & err){
-			cout<<"!!!"<<err.what();
-			return 1;
-		}
+		i=stoi(str);
 		return i;
 
 	}
@@ -77,10 +69,8 @@ public:
 			else{
 				c=get_sym();
 				k=f_ynary_minus();
-				if(k==0){
-					cout <<"!!! деление на ноль";
-					return 1;
-				}
+				if(k==0)
+					throw My_exception("!!! деление на ноль");
 				res/=k;
 			}
 		}
@@ -114,8 +104,8 @@ int main(int argc, char const *argv[])
 		Calc A(argv[1]);
 		cout<< A.result;
 	}
-	catch (My_exception &err){
-    		cout<<err.what();
+	catch (exception &err){
+    	cout<<"error "<<err.what();
 		return 1;
 	}
 	return 0;
