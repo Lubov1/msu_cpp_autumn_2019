@@ -100,12 +100,12 @@ int main(int argc, char const *argv[])
 
 	try{
 		if(argc!=2)
-		throw My_exception("!!! неправильное кол-во аргументов");
+			throw My_exception("!!! неправильное кол-во аргументов");
 		Calc A(argv[1]);
 		cout<< A.result;
 	}
 	catch (exception &err){
-    	cout<<"error "<<err.what();
+    		cout<<"error "<<err.what();
 		return 1;
 	}
 	return 0;
