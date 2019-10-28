@@ -23,6 +23,7 @@ int main(){
 
 		assert(x==1);
 		m *= 3; // умножение на число
+		m*=5;
 		Matrix m1(rows, cols);
 		Matrix m2(rows, cols);
 		assert(!(m1 == m));
