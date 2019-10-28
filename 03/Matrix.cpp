@@ -38,8 +38,8 @@ int Matrix::getRows(){
 	return rows;
 }
 int Matrix::getColumns(){
-		return cols;
-	}
+	return cols;
+}
 bool Matrix::operator==(const Matrix& other)const {
     if (this == &other)
         return true;
