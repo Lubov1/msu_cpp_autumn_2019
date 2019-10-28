@@ -34,9 +34,4 @@ int main(){
 	catch (exception &err){
 		cout<<"error";
 	}
-
-	
-
-
-
 }

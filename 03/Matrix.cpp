@@ -35,20 +35,20 @@ Matrix::~Matrix(){
 	}
 }
 int Matrix::getRows(){
-		return rows;
-	}
+	return rows;
+}
 int Matrix::getColumns(){
 		return cols;
 	}
 bool Matrix::operator==(const Matrix& other)const {
-        if (this == &other)
-            return true;
-        for (int i = 0; i < rows; ++i)
-        	for (int j = 0; j < cols; ++j)
-        		if (this->A[i][j] != other.A[i][j])
-        			return false;    
+    if (this == &other)
         return true;
-    }
+    for (int i = 0; i < rows; ++i)
+    	for (int j = 0; j < cols; ++j)
+    		if (this->A[i][j] != other.A[i][j])
+    			return false;    
+    return true;
+}
 Matrix&  Matrix::operator*=(const int& a){
 	for (int i = 0; i < rows; ++i){
     	for (int j = 0; j < cols; ++j)
