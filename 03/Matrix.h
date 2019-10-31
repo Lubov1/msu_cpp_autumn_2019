@@ -13,18 +13,16 @@ public:
 	class Row{
 	public:
 		int *row;
-		int kol_cols;
-		Row(int* s,int kol_cols);
-		int& operator[](int r);
+		size_t kol_cols;
+		Row(int* s,size_t kol_cols);
+		int& operator[](size_t r);
 	};
-	Matrix(int n,int m);
+	Matrix(size_t n,size_t m);
 	~Matrix();
-	int getRows();
-	int getColumns();
+	size_t getRows();
+	size_t getColumns();
 	Matrix& operator*=(const int& a);
 	bool operator==(const Matrix& other) const;
 	friend ostream & operator<<(ostream & out, const Matrix & matr);
-	Row  operator[](int r);
-
+	Row  operator[](size_t r);
 };
-

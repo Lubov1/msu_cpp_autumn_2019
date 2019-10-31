@@ -5,17 +5,17 @@
 #include "Matrix.h"
 
 
-Matrix::Row::Row(int* s,int kol_cols){
+Matrix::Row::Row(int* s,size_t kol_cols){
 	row=s;
 	this->kol_cols=kol_cols;
 }
-int& Matrix::Row::operator[](int r){
+int& Matrix::Row::operator[](size_t r){
 	if (r>=kol_cols || r<0)
 		throw out_of_range("");
 	return row[r];
 }
 
-Matrix::Matrix( int n, int m){
+Matrix::Matrix( size_t n, size_t m){
 	rows = n;
 	cols = m;
 	A = new int*[rows];
@@ -34,10 +34,10 @@ Matrix::~Matrix(){
 		delete[] A;
 	}
 }
-int Matrix::getRows(){
+size_t Matrix::getRows(){
 	return rows;
 }
-int Matrix::getColumns(){
+size_t Matrix::getColumns(){
 	return cols;
 }
 bool Matrix::operator==(const Matrix& other)const {
@@ -67,7 +67,7 @@ ostream & operator<<(ostream & out, const Matrix & matr){
 	}
 	return out;
 }
-Matrix::Row Matrix::operator[](int r){
+Matrix::Row Matrix::operator[](size_t r){
 	if (r>=rows || r<0)
 		throw out_of_range("");
 	return Row(A[r],cols);
