@@ -18,48 +18,41 @@ int main(){
 		BigInt s(230);
 		BigInt q1(99);
 
-		assert(g-d == -101);
-		assert(d-g ==101);
-		assert(d-s == (-119));
+		assert(g - d == -101);
+		assert(d - g == 101);
+		assert(d - s == (-119));
 
-		d=-d;g=-g;s=-s;
+		d = -d; g = -g; s = -s;
 
-		assert(g-d == 101);
-		assert(d-g == -101);
-		assert(d-s == 119);
+		assert(g - d == 101);
+		assert(d - g == -101);
+		assert(d - s == 119);
 
-		assert(g+d == -121);
-		assert(d+g == -121);
-		assert(d+s == -341);
+		assert(g + d == -121);
+		assert(d + g == -121);
+		assert(d + s == -341);
 
-		d=-d;g=-g;s=-s;
+		d = -d; g = -g; s = -s;
 
-		assert(g+d == 121);
-		assert(d+g == 121);
-		assert(d+s == 341);
+		assert(g + d == 121);
+		assert(d + g == 121);
+		assert(d + s == 341);
 
-		assert(g+(-d) == -101);
-		assert(d+(-g) == 101);
-		assert(d+(-s) == -119);
+		assert(g + (-d) == -101);
+		assert(d + (-g) == 101);
+		assert(d + (-s) == -119);
 
-		assert(q1+g == 109);
-		assert(g+10000 == 10010);
-		assert(q1-19345 == -19246);
-		assert(q1-99 == 0);
+		assert(q1 + g == 109);
+		assert(g + 10000 == 10010);
+		assert(q1 - 19345 == -19246);
+		assert(q1 - 99 == 0);
 
 		assert(q1 == q1);
-		assert(q1>g);
-		assert(-q1>-s);
-		assert(-s<0);
+		assert(q1 > g);
+		assert(-q1 > -s);
+		assert(-s < 0);
 
-		assert((s+g+d+q1+5+100000) == 100455);
-		// d=g;
-		// s=q1+d;
-		// s=move(q1);
-		// if (s<d)
-		// 	d=(d>=s);
-		// cout << g;
-		// BigInt a();
+		assert((s + g + d + q1 + 5 + 100000) == 100455);
 	}
 	catch (exception &err){
 		cout<<"error";
