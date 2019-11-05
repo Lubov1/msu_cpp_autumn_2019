@@ -17,7 +17,7 @@ BigInt::BigInt(const int a=0){
 	if (s){
 		data = new char[b.length() - 1];
 		size = b.length() - 1;
-		for (int i = 0;i<b.length() - 1;i++)
+		for (int i = 0;i < b.length() - 1;i++)
 		data[i] = b[i + 1];
 	}
 	else{
