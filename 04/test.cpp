@@ -53,6 +53,13 @@ int main(){
 		assert(-s<0);
 
 		assert((s+g+d+q1+5+100000) == 100455);
+		// d=g;
+		// s=q1+d;
+		// s=move(q1);
+		// if (s<d)
+		// 	d=(d>=s);
+		// cout << g;
+		// BigInt a();
 	}
 	catch (exception &err){
 		cout<<"error";

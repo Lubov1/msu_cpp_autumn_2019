@@ -10,7 +10,7 @@ class BigInt{
 	char* data;
 	int size;
 public:
-	BigInt(const int&a);
+	BigInt(const int a);
 	~BigInt();
 	BigInt(const BigInt& a);
 	friend ostream & operator<<(ostream & out, const BigInt & a);

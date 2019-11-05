@@ -8,7 +8,7 @@ using namespace std;
 
 
 
-BigInt::BigInt(const int& a=0){
+BigInt::BigInt(const int a=0){
 	if (a>=0)
 		s=false;
 	else 
@@ -39,7 +39,7 @@ BigInt::BigInt(const BigInt& a){
 		data[i]=a.data[i];
 }
 BigInt& BigInt::operator=(const BigInt& a){
-    if (this == &a)
+	if (this == &a)
         return *this;
     char* ptr = new char[a.size];
     delete[] data;
@@ -198,7 +198,7 @@ BigInt operator-(const BigInt& a,const BigInt& b){
 
 }
 bool operator==(const BigInt& a,const BigInt& b){
-    if (&b == &a)
+	if (&b == &a)
         return true;
     if((a.size!=b.size) && (a.s!=b.s))
     	return false;
