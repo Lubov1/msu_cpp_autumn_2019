@@ -70,7 +70,7 @@ BigInt operator+(const BigInt& a,const BigInt& b){
 	if (b.s == a.s){
 		if (a.size == b.size){
 			ptr=new char[a.size];
-			for(int i = a.size  1;i >= 0;i--){
+			for(int i = a.size - 1;i >= 0;i--){
 				c = int(a.data[i] - '0') + int(b.data[i + b.size - a.size] - '0');
 				if (f) c++;
 				if (c > 9) {f = true; ptr[i] = char(c - 10 + '0');}
