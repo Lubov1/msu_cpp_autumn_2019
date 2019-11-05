@@ -40,14 +40,14 @@ BigInt::BigInt(const BigInt& a){
 }
 BigInt& BigInt::operator=(const BigInt& a){
 	if (this == &a)
-        return *this;
-    char* ptr = new char[a.size];
-    delete[] data;
-    data = ptr;
-    size = a.size;
-    s=a.s;
-    copy(a.data, a.data + size, data);
-    return *this;
+		return *this;
+	char* ptr = new char[a.size];
+	delete[] data;
+	data = ptr;
+	size = a.size;
+	s=a.s;
+	copy(a.data, a.data + size, data);
+	return *this;
 }
 BigInt operator+(const BigInt& a,const BigInt& b){
 	int c;
@@ -110,7 +110,7 @@ BigInt operator+(const BigInt& a,const BigInt& b){
 			res.size=s1l;
 		}
 		res.s=a.s;
-    	return res;
+		return res;
 	}
 	if(a==(-b))
 		return 0;
@@ -187,7 +187,7 @@ BigInt operator-(const BigInt& a,const BigInt& b){
 		else
 			res.s=(a<=b);
 
-    	return res;
+		return res;
 	}
 	if (a==b)
 		return 0;
@@ -199,13 +199,13 @@ BigInt operator-(const BigInt& a,const BigInt& b){
 }
 bool operator==(const BigInt& a,const BigInt& b){
 	if (&b == &a)
-        return true;
-    if((a.size!=b.size) && (a.s!=b.s))
-    	return false;
-    for (int i=0;i<a.size;i++)
-    	if (a.data[i]!=b.data[i])
-    		return false;
-    return true;
+		return true;
+	if((a.size!=b.size) && (a.s!=b.s))
+		return false;
+	for (int i=0;i<a.size;i++)
+		if (a.data[i]!=b.data[i])
+			return false;
+	return true;
 }
 bool operator!=(const BigInt& a,const BigInt& b){
 	if(a==b)
@@ -215,22 +215,22 @@ bool operator!=(const BigInt& a,const BigInt& b){
 bool operator>(const BigInt& a,const BigInt& b){
 	if (a.s != b.s)
 		return !a.s;
-    if(a.size>b.size){
-    	return !a.s;
-    }
-    if((a.size<b.size))
-    	return a.s;
-    if (!a.s){
-	    for (int i=0;i<a.size;i++)
-	    	if(a.data[i]!=b.data[i])
-		    	return (a.data[i]>b.data[i]);
-    }
-    else{
-    	for (int i=0;i<a.size;i++)
-	    	if(a.data[i]!=b.data[i])
-		    	return (a.data[i]<b.data[i]);
-    }
-    return false;
+	if(a.size>b.size){
+		return !a.s;
+	}
+	if((a.size<b.size))
+		return a.s;
+	if (!a.s){
+		for (int i=0;i<a.size;i++)
+			if(a.data[i]!=b.data[i])
+				return (a.data[i]>b.data[i]);
+	}
+	else{
+		for (int i=0;i<a.size;i++)
+			if(a.data[i]!=b.data[i])
+				return (a.data[i]<b.data[i]);
+	}
+	return false;
 }
 bool operator<(const BigInt& a,const BigInt& b){
 	return b>a;
@@ -267,18 +267,18 @@ ostream & operator<<(ostream & out, const BigInt & a){
 
 
 BigInt::BigInt(BigInt&& moved): data(moved.data), size(moved.size), s(moved.s){
-    moved.data = nullptr;
-    moved.size = 0;
+	moved.data = nullptr;
+	moved.size = 0;
 }
 
 BigInt& BigInt::operator=(BigInt&& moved){
-    if (this == &moved)
-        return *this;
-    delete[] data;
-    data= moved.data;
-    size = moved.size;
-    s = moved.s;
-    moved.data = nullptr;
-    moved.size = 0;
-    return *this;
+	if (this == &moved)
+		return *this;
+	delete[] data;
+	data= moved.data;
+	size = moved.size;
+	s = moved.s;
+	moved.data = nullptr;
+	moved.size = 0;
+	return *this;
 }
