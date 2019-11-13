@@ -16,7 +16,7 @@ Serializer::Serializer(ostream& out)
 
 Error Serializer::process(uint64_t val)
 {
-    out_<<val<<Separator;
+    out_<< val<< Separator;
     return Error::NoError;
 
 
@@ -24,9 +24,9 @@ Error Serializer::process(uint64_t val)
 Error Serializer::process(bool val)
 {
     if (val)
-        out_<<"True"<<Separator;
+        out_ << "True" << Separator;
     else 
-        out_<<"False"<<Separator;
+        out_ << "False" << Separator;
     return Error::NoError;
 }
 
@@ -43,7 +43,7 @@ Deserializer::Deserializer( istream& in)
 Error Deserializer::process(uint64_t& val)
 {
     uint64_t p;
-    in_>> p;
+    in_ >> p;
     val = p;
     return Error::NoError;
 
