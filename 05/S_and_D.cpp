@@ -16,7 +16,7 @@ Serializer::Serializer(ostream& out)
 
 Error Serializer::process(uint64_t val)
 {
-    out_<<val;
+    out_<<val<<Separator;
     return Error::NoError;
 
 
@@ -24,9 +24,9 @@ Error Serializer::process(uint64_t val)
 Error Serializer::process(bool val)
 {
     if (val)
-        out_<<" True ";
+        out_<<"True"<<Separator;
     else 
-        out_<<" False ";
+        out_<<"False"<<Separator;
     return Error::NoError;
 }
 

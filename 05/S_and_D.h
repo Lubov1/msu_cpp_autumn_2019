@@ -21,10 +21,16 @@ public:
     Serializer(ostream& out);
 
     template <class T>
-    Error save(T& object);
+    Error save(T& object)
+    {
+        return object.serialize(*this);
+    }
 
     template <class... ArgsT>
-    Error operator()(ArgsT... args);
+    Error operator()(ArgsT... args)
+    {
+        return process(forward<ArgsT>(args)...);
+    }
     
 private:
 
@@ -33,7 +39,13 @@ private:
 
 
     template <class T, class ... Args>
-    Error process(T&& val, Args&&... args);
+    Error process(T&& val, Args&&... args)
+    {
+        process(val);
+        process(forward<Args>(args)...);
+        return Error::NoError;
+
+    }
 };
 
 
@@ -45,55 +57,31 @@ class Deserializer
     static constexpr char Separator = ' ';
 public:
     explicit Deserializer( istream& in);
-
     template <class T>
-    Error load(T& object);
+    Error load(T& object)
+    {
+        return object.serialize(*this);
+    }
 
     template <class... ArgsT>
-    Error operator()(ArgsT&... args);
+    Error operator()(ArgsT&... args)
+    {
+        return process(args...);
+    }
+
     
 private:
     Error process(uint64_t& val);
     Error process(bool& value);
     template <class T, class... Args>
-    Error process(T &val, Args&... args);
-};
-template <class T>
-Error Serializer::save(T& object)
-{
-    return object.serialize(*this);
-}
-
-template <class... ArgsT>
-Error Serializer::operator()(ArgsT... args)
-{
-    return process(args...);
-}
-
-template <class T>
-Error Deserializer::load(T& object)
-{
-    return object.serialize(*this);
-}
-
-template <class... ArgsT>
-Error Deserializer::operator()(ArgsT&... args)
-{
-    return process(args...);
-}
-template <class T, class... Args>
-Error Deserializer::process(T &val, Args&... args)
+    Error process(T &val, Args&... args)
     {
         process(val);
         process(args...);
         return Error::NoError;
     }
+};
 
-template <class T, class ... Args>
-Error Serializer::process(T&& val, Args&&... args)
-{
-    process(val);
-    process(forward<Args>(args)...);
-    return Error::NoError;
 
-}
+
+
