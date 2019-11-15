@@ -39,7 +39,7 @@ private:
 
 
     template <class T, class ... Args>
-    Error process(T&& val, Args&&... args)
+    Error process(T val, Args... args)
     {
         process(val);
         process(args...);
