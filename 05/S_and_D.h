@@ -29,7 +29,7 @@ public:
     template <class... ArgsT>
     Error operator()(ArgsT... args)
     {
-        return process(forward<ArgsT>(args)...);
+        return process(args...);
     }
     
 private:
@@ -42,7 +42,7 @@ private:
     Error process(T&& val, Args&&... args)
     {
         process(val);
-        process(forward<Args>(args)...);
+        process(args...);
         return Error::NoError;
 
     }
