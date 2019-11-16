@@ -27,9 +27,9 @@ public:
     }
 
     template <class... ArgsT>
-    Error operator()(ArgsT... args)
+    Error operator()(ArgsT&&... args)
     {
-        return process(args...);
+        return process(forward<ArgsT>(args)...);
     }
     
 private:
@@ -39,10 +39,10 @@ private:
 
 
     template <class T, class ... Args>
-    Error process(T val, Args... args)
+    Error process(T&& val, Args&&... args)
     {
-        process(val);
-        process(args...);
+        process(forward<T>(val));
+        process(forward<Args>(args)...);
         return Error::NoError;
 
     }
