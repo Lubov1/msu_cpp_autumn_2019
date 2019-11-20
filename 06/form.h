@@ -6,15 +6,14 @@
 #include <exception>
 using namespace std;
 
-class func{
+class Format{
 	vector<string> mas;
 public:
 	template <class T>
 	void process(T&& val){
 		stringstream y;
 		y << val;
-		string d = string(y.str());
-		mas.push_back(d);
+		mas.push_back(y.str());
 	}
 	template <class T, class... ArgsT>
 	void process(T&& val, ArgsT&&...args){
@@ -22,19 +21,19 @@ public:
 		process(forward<ArgsT>(args)...);
 	}
 	template <class... ArgsT>
-	string operator()(string str, ArgsT&&... args){
+	string operator()(const string& str, ArgsT&&... args){
 		int counter_param = 0;
 		stringstream s;
 		string param_num;
-		int k;
+		unsigned int k;
 		process(forward<ArgsT>(args)...);
-		for(int j=0; j < str.length();){
+		for(unsigned int j=0; j < str.length();){
 			if (str[j] == '{'){
 				counter_param++;
 				j++;
 				if (j < str.length())
 					for(;j < str.length() && str[j] != '}';j++)
-						param_num.push_back(str[j]);
+						param_num.push_back(move(str[j]));
 					if (str[j++] != '}')
 						throw runtime_error("нет закрывающей скобки");
 					k = stoi(param_num);
