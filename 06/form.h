@@ -13,7 +13,7 @@ public:
 	void process(T&& val){
 		stringstream y;
 		y << val;
-		mas.push_back(y.str());
+		mas.push_back(move(y.str()));
 	}
 	template <class T, class... ArgsT>
 	void process(T&& val, ArgsT&&...args){
