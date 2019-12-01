@@ -19,10 +19,10 @@ public:
 		new (ptr)T(std::forward<ArgsT>(Args)...);
 	}
 	pointer allocate(size_type size){
-		return new value_type[size];
+		return static_cast<pointer> (::operator new[](sizeof(value_type) * size));
 	}
 	void deallocate(pointer ptr, size_type size){
-		delete[](ptr);
+		::operator delete[](ptr);
 	}
 	void destroy(pointer ptr){
 		ptr->~T();
@@ -123,7 +123,7 @@ public:
 	}
 	value_type pop_back(){
 		used--;
-		value_type el = data[used];
+		value_type el = move(data[used]);
 		alloc.destroy(data + used);
 		return el;
 	}
@@ -153,7 +153,7 @@ public:
 			if(newSize >= allocated)
 				alloc.reserve(newSize);
 			for (pointer p = used+1; p<newSize; p++)
-				alloc.construct(p, T());
+				alloc.construct(p);
 		}
 		if (newSize < used){
 			for (pointer p = data + used; p > data + newSize; p--)

@@ -12,6 +12,7 @@ using namespace std;
 
 
 int main(){
+
 	size_t size = 4;
 	Vector<int> v(size, 7);
 	for (int i = 0; i < v.size(); i++)
@@ -25,11 +26,10 @@ int main(){
 	Iterator<int> t = v1.begin();
 	for (int j = 0; j < v1.size();j++,++t)
 		assert(v1[j] == *t);
-
 	Vector<string> v3(5,"yes");
 	Iterator<string> t3 = v3.begin();
 
 	for (int j = 0; j < v3.size();j++,++t3)
 		assert(v3[j] == *t3);
-		
+
 }
