@@ -1,26 +1,23 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-
+#include <algorithm>
 #include <thread>
 #include <string>
 #include <cstdlib>
 #include <iterator>
 #include <queue>
 using namespace std;
-int size_f;
-int batch_size = 1024 * 1024;
-int n;
 
-vector <string> f(1);
-void func1(int n1){
+void func1( int n1, int size_f,int batch_size){
+    vector<uint64_t> a(batch_size);
     int ost1;
     int ost2;
     ifstream myfile ("file.bin", ios::binary);
-    uint64_t *a = new uint64_t[batch_size];
+    int n;
     uint64_t c;int last;int size_cur;int ost;
     string name;
-    if (n == 0){
+    if (n1 == 0){
         size_cur = int(size_f / 2);
         myfile.seekg (0, ios::beg);
     }
@@ -31,25 +28,15 @@ void func1(int n1){
     n = size_cur / batch_size;
     ost = size_f % ( 2 * batch_size);
     last = size_cur % batch_size;
-    if (n)
+    if (n1)
         ost2 = last;
     else
         ost1 = last;
     for (int i = 0;i < n;i++) {
-        for(int j = 0;j < batch_size;j++){
-            myfile.read( (char *) &c, sizeof(uint64_t));
-            a[j] = c;
-        }
-        std::qsort(a, batch_size, sizeof *a, [](const void* a, const void* b)
-        {
-            uint64_t arg1 = *static_cast<const uint64_t*>(a);
-            uint64_t arg2 = *static_cast<const uint64_t*>(b);
-            if(arg1 < arg2) return -1;
-            if(arg1 > arg2) return 1;
-            return 0;
-        });
-        name=to_string(i * n + n1) + ".txt";
-        f.push_back(name);
+        for(int j = 0;j < batch_size;j++)
+            myfile.read( (char *) &a[j], sizeof(uint64_t));
+        sort(a.begin(),a.end());
+        name = to_string(i * n + n1) + ".txt";
         {
             ofstream fileStrmIn (name);
             for (int j = 0; j < batch_size; ++j)
@@ -58,38 +45,23 @@ void func1(int n1){
         }       
     }
     if(last){
-        uint64_t *a1 = new uint64_t[last];
+        vector<uint64_t> a1(last);
         if (n1)
             myfile.seekg ((batch_size * 2 * n) * sizeof(uint64_t), ios::beg);
         else
             myfile.seekg ((batch_size * 2 * n + (ost - last)) * sizeof(uint64_t), ios::beg);
-        for(int j = 0;j < last;j++){
-            myfile.read( ( char * ) &c, sizeof(uint64_t));
-            a1[j] = c;
-        }
-        std::qsort(a1, last, sizeof *a1, [](const void* a, const void* b)
-        {
-            uint64_t arg1 = *static_cast<const uint64_t*>(a);
-            uint64_t arg2 = *static_cast<const uint64_t*>(b);
-            if(arg1 < arg2) return -1;
-            if(arg1 > arg2) return 1;
-            return 0;
-        });
-        int k = 2 * n + n1;
-        name=to_string(k) + ".txt";
-        f.push_back(name);
-
+        for(int j = 0;j < last;j++)
+            myfile.read( ( char * ) &a1[j], sizeof(uint64_t));
+        sort(a1.begin(),a1.end());
+        name = to_string(2 * n + n1) + ".txt";
         {
         ofstream myfile1 (name);
-
         for (int j = 0; j < last; ++j){
             myfile1 << a1[j] << ' ';
         }
         myfile1.close();  
         } 
-        delete[] a1;
     }    
-    delete[] a;
     myfile.close();
 }
 template <class MinHeap, class OutIt>
@@ -107,33 +79,39 @@ void merge(MinHeap& heap, OutIt& out)
 
 int main()
 {
+    int size_f;
+    int batch_size = 5;
     ifstream myfile ("file.bin", ios::binary);//исходный файл
-
     streampos begin,end;
     begin = myfile.tellg();
     myfile.seekg (0, ios::end);
     end = myfile.tellg();
     size_f = (end-begin) / sizeof(uint64_t);
-    thread Thread1(&func1, 0);
-    thread Thread2(&func1, 1);
+    int s1 = size_f / 2;
+    int s2 = (size_f / 2 ) + size_f % 2;
+    int k = int(s1 / batch_size) + int(s2 / batch_size);
+    if (s2 % batch_size) k++;
+    if (s1 % batch_size) k++;
+    thread Thread1(&func1, 0, size_f, batch_size);
+    thread Thread2(&func1, 1, size_f, batch_size);
     Thread1.join();
     Thread2.join();
     myfile.close();
     ofstream result("result.bin", ios::binary);
     typedef istream_iterator<int> It;
-    vector <ifstream> file (f.size());
+    vector <ifstream> file (k);
     typedef pair<It, It> Range;
     auto less_first = []( Range lhs,  Range rhs) {
         return *lhs.first > *rhs.first;
     };
     priority_queue<Range, vector<Range>, decltype(less_first)> heap(less_first);
-    int c = f.size() - 1;
-    for(;c > 0;c--) {
-        file[c].open(f[c]);
+    int c = k - 1;
+    for(;c >= 0;c--) {
+        file[c].open(to_string(c) + ".txt");
         heap.emplace(It(file[c]), It());
     }
     merge(heap, result);
-    for(size_t i = 0; i < f.size(); ++i)
+    for(size_t i = 0; i < k; ++i)
         file[i].close();
     result.close();
     ifstream myfile1 ("file.bin", ios::binary);
@@ -145,14 +123,11 @@ int main()
     }
     cout << "\nрезультат\n";
     ifstream result1 ("result.bin", ios::binary);
-
     for(int j = 0;j < size_f;j++){
         result1.read( ( char * ) &s, sizeof(uint64_t));
         cout<<s<<' ';
     }
     result1.close();
     myfile1.close();
-
-
     return 0;
 }
